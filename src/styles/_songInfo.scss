@@ -1,0 +1,16 @@
+.song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+
+  img {
+    width: 20%;
+    border-radius: 50%;
+  }
+
+  h1 {
+    margin: 1rem;
+  }
+}

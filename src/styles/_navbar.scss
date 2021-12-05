@@ -1,0 +1,28 @@
+nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 3rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  button {
+    padding: 1rem 1.5rem;
+    border: none;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+
+    transition: 0.5 ease-in;
+
+    &:hover {
+      border: none;
+      border: 2px solid black;
+      background: black;
+      color: white;
+    }
+  }
+}
