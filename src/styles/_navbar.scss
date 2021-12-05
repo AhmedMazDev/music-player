@@ -16,7 +16,7 @@ nav {
     background: white;
     cursor: pointer;
 
-    transition: 0.5 ease-in;
+    transition: all 0.5s ease-in-out;
 
     &:hover {
       border: none;

@@ -4,6 +4,7 @@ import Player from "./Components/Player";
 import SongInfo from "./Components/SongInfo";
 import getSongs from "./Data";
 import NavBar from "./Components/NavBar";
+import Library from "./Components/Library";
 //Styles
 import "./styles/app.scss";
 
@@ -16,6 +17,7 @@ function App() {
     duration: 0,
   });
   const [isPlaying, setIsPlaying] = useState(false);
+  const [libraryStatus, setLibraryStatus] = useState(false);
 
   //refs
   const audioRef = useRef();
@@ -30,8 +32,11 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <NavBar />
+    <div className={`App ${libraryStatus ? "library-active" : ""}`}>
+      <NavBar
+        libraryStatus={libraryStatus}
+        setLibraryStatus={setLibraryStatus}
+      />
       <SongInfo currentSong={currentSong} />
       <Player
         currentSong={currentSong}
@@ -41,6 +46,7 @@ function App() {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
       />
+      <Library songs={songs} libraryStatus={libraryStatus} />
       <audio
         src={currentSong.audio}
         onTimeUpdate={handleTimeUpdate}
