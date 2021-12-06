@@ -20,6 +20,10 @@
 
   input {
     width: 100%;
+    -webkit-appearance: none;
+    background: transparent;
+
+    cursor: pointer;
   }
 
   p {
@@ -50,7 +54,6 @@
   top: 0;
   left: 0;
   transform: translateX(0%);
-  padding: 1rem;
   pointer-events: none;
 }
 
