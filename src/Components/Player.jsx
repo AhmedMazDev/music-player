@@ -9,6 +9,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Player = ({
+  songs,
+  setSongs,
+  setCurrentSong,
   currentSong,
   audioRef,
   currentSongInfo,
@@ -16,6 +19,17 @@ const Player = ({
   setIsPlaying,
   setCurrentSongInfo,
 }) => {
+  useEffect(() => {
+    const newSongs = songs.map((song) => {
+      if (song.id === currentSong.id) {
+        return { ...song, active: true };
+      } else {
+        return { ...song, active: false };
+      }
+    });
+    setSongs(newSongs);
+  }, [currentSong]);
+
   //events handlers
   const handlePlay = () => {
     if (!isPlaying) {
@@ -31,6 +45,22 @@ const Player = ({
     setCurrentSongInfo({ ...setCurrentSongInfo, currentTime: e.target.value });
   };
 
+  const handleSkipClick = async (direction) => {
+    let index = songs.findIndex((song) => song.active);
+    if (direction === "right") {
+      index = (index + 1) % songs.length;
+    }
+    if (direction === "left") {
+      if ((index - 1) % songs.length === -1) {
+        index = songs.length - 1;
+      } else {
+        index = (index - 1) % songs.length;
+      }
+    }
+    await setCurrentSong(songs[index]);
+    if (isPlaying) audioRef.current.play();
+  };
+
   //helpers functions
   const getTime = (seconds) => {
     return (
@@ -40,27 +70,52 @@ const Player = ({
     );
   };
 
+  //style input
+  const trackAnim = {
+    transform: `translateX(${currentSongInfo.animationPercentage}%)`,
+  };
+
   return (
     <div className="player">
       <div className="player-timeline">
         <p>{getTime(currentSongInfo.currentTime)}</p>
-        <input
-          type="range"
-          min="0"
-          value={currentSongInfo.currentTime}
-          onChange={handleChange}
-          max={currentSongInfo.duration}
-        />
-        <p>{getTime(currentSongInfo.duration)}</p>
+        <div
+          style={{
+            background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
+          }}
+          className="track"
+        >
+          <input
+            type="range"
+            min="0"
+            value={currentSongInfo.currentTime}
+            onChange={handleChange}
+            max={currentSongInfo.duration || 0}
+          />
+          <div style={trackAnim} className="animate-track"></div>
+        </div>
+        <p>
+          {currentSongInfo.duration
+            ? getTime(currentSongInfo.duration)
+            : "0:00"}
+        </p>
       </div>
       <div className="player-controls">
-        <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+        <FontAwesomeIcon
+          size="2x"
+          icon={faChevronLeft}
+          onClick={() => handleSkipClick("left")}
+        />
         <FontAwesomeIcon
           size="2x"
           icon={isPlaying ? faPause : faPlay}
           onClick={handlePlay}
         />
-        <FontAwesomeIcon size="2x" icon={faChevronRight} />
+        <FontAwesomeIcon
+          size="2x"
+          icon={faChevronRight}
+          onClick={() => handleSkipClick("right")}
+        />
       </div>
     </div>
   );

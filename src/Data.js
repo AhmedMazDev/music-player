@@ -69,7 +69,7 @@ function getSongs() {
       audio: "https://mp3.chillhop.com/serve.php/?mp3=10315",
       color: ["#ED632D", "#B3786E"],
       id: uuidv4(),
-      active: true,
+      active: false,
     },
     {
       name: "Sleepover",
